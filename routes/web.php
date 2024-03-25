@@ -1,7 +1,15 @@
 <?php
 
+use App\Http\Controllers\CookiesController;
+use App\Http\Controllers\FileuploadController;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\InputController;
+use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UrlController;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,6 +61,38 @@ Route::post('/input/hello/first', [InputController::class, 'first']);
 Route::post('/input/helloinput', [InputController::class, 'helloInput']);
 
 Route::post('/input/helloarray', [InputController::class, 'helloArray']);
+
+Route::post('/file/upload', [FileuploadController::class, 'upload']);
+
+Route::get('/response', [ResponseController::class, 'response']);
+Route::get('/response/download', [ResponseController::class, 'download']);
+Route::get('/response/file', [ResponseController::class, 'responseFile']);
+
+Route::get('/cookie/set', [CookiesController::class, 'setCookies']);
+Route::get('/cookie/get', [CookiesController::class, 'getCookies']);
+Route::get('/cookie/clear', [CookiesController::class, 'clearCookies']);
+
+Route::get('/redirect/hello/{name}', [RedirectController::class, 'hello'])->name('redirect-hello');
+Route::get('/redirect/name', [RedirectController::class, 'name']);
+
+Route::get('/middleware/api', function () {
+    return 'OK';
+})->middleware('contoh:PZN, 401');
+
+Route::get('/form', [FormController::class, 'viewForm']);
+Route::post('/form/submit', [FormController::class, 'submitForm']);
+
+Route::get('/url/full', [UrlController::class, 'UrlFull']);
+Route::get('/url/current', [UrlController::class, 'UrlCurrent']);
+
+Route::controller(SessionController::class)->prefix('/session')->group(function () {
+    Route::get('/set', 'setSession');
+    Route::get('/get', 'getSession');
+});
+
+Route::get('/error/sample', function () {
+    throw new Exception('sample exception');
+});
 
 Route::fallback(function () {
     return 'EROR GAN';

@@ -20,7 +20,6 @@ class FilesystemTest extends TestCase
     {
         $filesystem = Storage::disk('public');
         $filesystem->put('file.txt', 'helo ganteng');
-
         self::assertEquals('helo ganteng', $filesystem->get('file.txt'));
     }
 }
